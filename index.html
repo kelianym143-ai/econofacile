@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0284c7" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>ÉconoFacile - Application Financière</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div id="loginScreen" class="login-screen active">
+      <div class="login-card">
+        <h2>Connexion ÉconoFacile</h2>
+        <form id="loginForm">
+          <label>Nom d'utilisateur</label>
+          <input id="loginUsername" type="text" required placeholder="utilisateur" />
+          <label>Mot de passe</label>
+          <input id="loginPassword" type="password" required placeholder="********" />
+          <button type="submit" class="primary">Se connecter</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="appSplash" class="splash-screen">
+      <div class="splash-logo">ÉconoFacile</div>
+      <div class="splash-subtitle">Application Financière</div>
+    </div>
+
+    <div id="appLoading" class="loading-overlay hidden">
+      <div class="spinner"></div>
+      <span>Chargement...</span>
+    </div>
+
+    <main id="appContent" class="container hidden">
+      <button id="btnBack" class="btn-back hidden">← Retour</button>
+      <div id="messageBox" class="message-box hidden"></div>
+      <h1>ÉconoFacile</h1>
+      <p class="subtitle">Gérez vos finances avec graphiques, objectifs et analyses automatiques.</p>
+
+      <section class="card">
+        <h2>Assistant financier IA</h2>
+        <div class="line">
+          <strong id="iaAdvice">Chargement de l'assistant intelligent...</strong>
+          <small>L'assistant analyse vos données et donne des alertes et recommandations proactives.</small>
+        </div>
+
+        <div class="line">
+          <span id="iaForecast1Y">Prévision 1 an : -</span><br/>
+          <span id="iaForecast5Y">Prévision 5 ans : -</span><br/>
+          <span id="iaForecast10Y">Prévision 10 ans : -</span>
+        </div>
+
+        <div class="line">
+          <label><input id="toggleAutoBudget" type="checkbox" /> Automatisation financière</label>
+          <label><input id="toggleImpulseBlock" type="checkbox" /> Blocage comportements impulsifs</label>
+        </div>
+
+        <div class="line">
+          <button id="runWasteDetector" type="button">Détecteur de gaspillage</button>
+          <button id="runNegotiateBills" type="button">Négocier les factures (simulation)</button>
+          <button id="runFraudScan" type="button">Anti-fraude IA</button>
+          <button id="runRoboAdvisor" type="button">Robo-conseiller</button>
+        </div>
+
+        <div class="line">
+          <strong>Niveau :</strong> <span id="userLevel">1</span> • <strong>Points :</strong> <span id="userPoints">0</span> • <strong>Score vert :</strong> <span id="greenScore">N/A</span>
+        </div>
+      </section>
+
+      <section class="card card-inline">
+        <div>
+          <h2>Filtres</h2>
+          <label for="periodSelect">Période :</label>
+          <select id="periodSelect">
+            <option value="all">Toutes</option>
+            <option value="thisMonth">Ce mois-ci</option>
+            <option value="lastMonth">Mois dernier</option>
+            <option value="thisYear">Cette année</option>
+            <option value="customRange">Intervalle personnalisé</option>
+          </select>
+          <label for="filterType" style="margin-left: 15px;">Type :</label>
+          <select id="filterType">
+            <option value="">Tous les types</option>
+            <option value="income">Revenus</option>
+            <option value="expense">Dépenses</option>
+          </select>
+          <label for="filterCategory" style="margin-left: 15px;">Catégorie :</label>
+          <select id="filterCategory">
+            <option value="">Toutes les catégories</option>
+            <option value="Salaire">Salaire</option>
+            <option value="Alimentation">Alimentation</option>
+            <option value="Logement">Logement</option>
+            <option value="Transport">Transport</option>
+            <o ption value="Loisirs">Loisirs</option>
+            <option value="Autres">Autres</option>
+          </select>
+          <div id="customDateRange" class="hidden">
+            <label for="filterStartDate" style="margin-left: 15px;">Du :</label>
+            <input type="date" id="filterStartDate" />
+            <label for="filterEndDate" style="margin-left: 15px;">Au :</label>
+            <input type="date" id="filterEndDate" />
+          </div>
+        </div>
+        <div class="right-actions">
+          <label for="monthlyGoal">Objectif mensuel</label>
+          <input type="number" id="monthlyGoal" placeholder="Ex 5000" step="0.01" />
+          <button id="exportData" type="button" class="primary">Exporter</button>
+          <button id="clearStorage" type="button" class="danger">Effacer les données</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Nouvelle transaction</h2>
+        <form id="formTransaction">
+          <div class="line">
+            <label for="title">Description</label>
+            <input id="title" required maxlength="50" placeholder="Salaire, courses..." />
+          </div>
+          <div class="line">
+            <label for="amount">Montant</label>
+            <input id="amount" type="number" step="0.01" required placeholder="0.00" />
+          </div>
+          <div class="line">
+            <label for="type">Type</label>
+            <select id="type">
+              <option value="income">Revenu</option>
+              <option value="expense">Dépense</option>
+            </select>
+          </div>
+          <div class="line">
+            <label for="category">Catégorie</label>
+            <select id="category">
+              <option value="Salaire">Salaire</option>
+              <option value="Alimentation">Alimentation</option>
+              <option value="Logement">Logement</option>
+              <option value="Transport">Transport</option>
+              <option value="Loisirs">Loisirs</option>
+              <option value="Autres">Autres</option>
+            </select>
+          </div>
+          <button type="submit">Ajouter</button>
+        </form>
+      </section>
+
+      <section class="grid2">
+        <article class="card summary">
+          <h2>Résumé</h2>
+          <div class="stats">
+            <div><strong id="totalIncome">0,00 €</strong><small>Revenus</small></div>
+            <div><strong id="totalExpenses">0,00 €</strong><small>Dépenses</small></div>
+            <div><strong id="balance">0,00 €</strong><small>Solde</small></div>
+          </div>
+          <div class="mini-stats">
+            <div><strong id="expensePercent">0%</strong><small>Pourcentage dépensé</small></div>
+            <div><strong id="topCategory">-</strong><small>Catégorie principale</small></div>
+            <div><strong id="goalStatus">Pas d'objectif</strong><small>Progression objectif</small></div>
+            <div><strong id="forecastBalance">0,00 €</strong><small>Prévision du solde</small></div>
+            <div><strong id="avgTransaction">0,00 €</strong><small>Transaction moyenne</small></div>
+            <div><strong id="totalTransactions">0</strong><small>Transactions totales</small></div>
+          </div>
+          <div id="alertBanner" class="alert hidden"></div>
+        </article>
+
+        <article class="card">
+          <h2>Liste des transactions</h2>
+          <table id="transactionsTable">
+            <thead><tr><th>Description</th><th>Type</th><th>Catégorie</th><th>Montant</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </article>
+      </section>
+
+      <section class="card">
+        <h2>Graphiques</h2>
+        <div class="charts">
+          <div class="chart-card">
+            <h3>Répartition par catégorie</h3>
+            <canvas id="categoryChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Revenu vs Dépense</h3>
+            <canvas id="typeChart"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').then(reg => console.log('Service Worker enregistré', reg)).catch(err => console.log('Erreur SW', err));
+        });
+      }
+    </script> 
+  </body>
+</html>
